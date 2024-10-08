@@ -218,7 +218,7 @@ def user_create():
     return response, 201
 
 
-@app.route("/user/password/update", methods=["POST"])
+@app.route("/user/password/update", methods=["PATCH"])
 @jwt_required()
 def user_password_update():
     data = request.get_json()

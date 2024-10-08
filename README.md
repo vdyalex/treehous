@@ -86,7 +86,7 @@ Should create a user based on the accepted `email` and `password`. It must have 
 
 > _Includes validation for existing users for avoiding collision, althought in real life it might be exploited._
 
-#### `POST /user/password/update`
+#### `PATCH /user/password/update`
 
 Should update the password of the currently logged user. It must have a `password_confirmation` identical to the `password`, and beyond that, a field to confirm the `current_password`.
 
