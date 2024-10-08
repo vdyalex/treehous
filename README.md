@@ -62,17 +62,17 @@ Those are considered the bare minimum, and is far from being accomplished in 30 
 
 When the user is authenticated via cookie session, this endpoint returns the data from the logged user.
 
-#### `POST auth/login`
+#### `POST /auth/login`
 
 Accepts `email` and `password`. Should create a user with that data.
 
 > _Includes validation for existing users for avoiding collision, althought in real life it might be exploited._
 
-#### `POST auth/logout`
+#### `POST /auth/logout`
 
 Deauthenticate the currently logged user by invalidating the session. Fails in case there is no active session.
 
-#### `POST auth/token/refresh`
+#### `POST /auth/token/refresh`
 
 Used to refresh the `access_token`. It allows the JWT negotiation to keep valid for most of clients, expiring the `access_token` which is retrieved with the `refresh_token`.
 
@@ -80,13 +80,13 @@ Used to refresh the `access_token`. It allows the JWT negotiation to keep valid 
 
 > **Note:** Refresh Tokens aren't recommended to be stored in browser sessions (cookies) due to its sensitivity to generate a new Access Token. It's currently implemented in that way for simplifying the implementation and quickly test on Postman.
 
-#### `POST user/create`
+#### `POST /user/create`
 
 Should create a user based on the accepted `email` and `password`. It must have a `password_confirmation` identical to the `password`.
 
 > _Includes validation for existing users for avoiding collision, althought in real life it might be exploited._
 
-#### `POST user/password/update`
+#### `POST /user/password/update`
 
 Should update the password of the currently logged user. It must have a `password_confirmation` identical to the `password`, and beyond that, a field to confirm the `current_password`.
 
