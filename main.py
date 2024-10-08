@@ -26,7 +26,6 @@ from config import settings
 
 app = Flask(__name__)
 
-# @TODO: REPLACE THESE KEYS WITH PROJECT CONFIGURATION
 app.secret_key = settings.APP_SECRET_KEY
 
 app.config["SQLALCHEMY_DATABASE_URI"] = settings.SQLALCHEMY_DATABASE_URI
@@ -34,7 +33,7 @@ app.config["JWT_SECRET_KEY"] = settings.JWT_SECRET_KEY
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["JWT_TOKEN_LOCATION"] = ["cookies"]
 
-# NOT RECOMMENDED IN PRODUCTION - DISABLED SINCE THIS IS A SAMPLE
+# NOT RECOMMENDED IN PRODUCTION - DISABLED SINCE THIS IS A PROJECT SAMPLE
 app.config["JWT_COOKIE_CSRF_PROTECT"] = False
 
 db = SQLAlchemy(app)
