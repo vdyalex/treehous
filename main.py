@@ -138,7 +138,7 @@ def login():
     return response, 200
 
 
-@app.route("auth/token/refresh")
+@app.route("/auth/token/refresh")
 @jwt_required(refresh=True)
 def refresh():
     response = jsonify(
