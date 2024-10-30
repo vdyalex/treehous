@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 
 def test_root_whoami_successfully_fetch(client, authentication):
@@ -18,7 +19,7 @@ def test_root_whoami_successfully_fetch(client, authentication):
         }
     }
 
-    case.assertEqual(response.status_code, 200)
+    case.assertEqual(response.status_code, HTTPStatus.OK)
     case.assertDictEqual(expect, result)
 
 
@@ -38,5 +39,5 @@ def test_root_whoami_fail_fetch(client, deauthentication):
         "errors": [f"Missing {header_name} Header"],
     }
 
-    case.assertEqual(response.status_code, 401)
+    case.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
     case.assertDictEqual(expect, result)

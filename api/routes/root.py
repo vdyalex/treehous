@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import Blueprint, jsonify
 from flask_jwt_extended import (
     current_user,
@@ -13,9 +14,9 @@ blueprint = Blueprint("root", __name__)
 def index():
     if not current_user:
         response = jsonify(status="FAILED", message="No user authenticated")
-        return response, 401
+        return response, HTTPStatus.UNAUTHORIZED
 
     user = {"id": current_user.id, "email": current_user.email}
     response = jsonify(user=user)
 
-    return response, 200
+    return response, HTTPStatus.OK

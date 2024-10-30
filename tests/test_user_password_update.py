@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 
 def test_user_password_update_successfully_update(client, authentication):
@@ -29,7 +30,7 @@ def test_user_password_update_successfully_update(client, authentication):
 
         result = response.get_json()
 
-        case.assertEqual(response.status_code, 200)
+        case.assertEqual(response.status_code, HTTPStatus.OK)
         case.assertDictEqual(expect, result)
 
     execute(new_password, old_password)
@@ -62,7 +63,7 @@ def test_user_password_update_incorrect_previou_password(client, authentication)
         "message": "Previous password is invalid",
     }
 
-    case.assertEqual(response.status_code, 400)
+    case.assertEqual(response.status_code, HTTPStatus.PRECONDITION_FAILED)
     case.assertDictEqual(expect, result)
 
 
@@ -103,5 +104,5 @@ def test_user_password_update_invalid_input_data(client, authentication):
         ],
     }
 
-    case.assertEqual(response.status_code, 400)
+    case.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
     case.assertDictEqual(expect, result)

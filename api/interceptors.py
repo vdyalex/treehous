@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import jsonify
 from flask_jwt_extended import JWTManager
 
@@ -9,8 +10,12 @@ jwt = JWTManager()
 
 @jwt.unauthorized_loader
 def unauthorized_loader(reason):
-    response = jsonify(status="FAILED", message="Unable to authenticate", errors=[reason])
-    return response, 401
+    response = jsonify(
+        status="FAILED",
+        message="Unable to authenticate",
+        errors=[reason],
+    )
+    return response, HTTPStatus.UNAUTHORIZED
 
 
 @jwt.user_lookup_loader

@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 
 def test_auth_login_successfully_authenticate(client):
@@ -19,7 +20,7 @@ def test_auth_login_successfully_authenticate(client):
         "message": f"User {user_email} was successfully logged in",
     }
 
-    case.assertEqual(response.status_code, 200)
+    case.assertEqual(response.status_code, HTTPStatus.OK)
     case.assertDictEqual(expect, result)
 
 
@@ -41,7 +42,7 @@ def test_auth_login_forbidden_access_unexisting_user(client):
         "message": "Error while logging in",
     }
 
-    case.assertEqual(response.status_code, 401)
+    case.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
     case.assertDictEqual(expect, result)
 
 
@@ -63,7 +64,7 @@ def test_auth_login_forbidden_access_incorrect_credentials(client):
         "message": "Error while logging in",
     }
 
-    case.assertEqual(response.status_code, 401)
+    case.assertEqual(response.status_code, HTTPStatus.UNAUTHORIZED)
     case.assertDictEqual(expect, result)
 
 
@@ -99,5 +100,5 @@ def test_auth_login_invalid_input(client):
         ],
     }
 
-    case.assertEqual(response.status_code, 400)
+    case.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
     case.assertDictEqual(expect, result)

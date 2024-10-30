@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (
     create_access_token,
@@ -12,7 +13,6 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from api.models import UserModel
 from api.validators import UserCreateValidator, UserPasswordUpdateValidator
-
 
 blueprint = Blueprint("user", __name__, url_prefix="/user")
 
@@ -32,7 +32,7 @@ def user_create():
             status="FAILED",
             message=f"User {existing_user.email} already exists",
         )
-        return response, 409
+        return response, HTTPStatus.CONFLICT
 
     new_user = UserModel(email=email, password=password)
 
@@ -48,7 +48,7 @@ def user_create():
             message="Invalid payload",
             errors=exception.errors(include_url=False, include_context=False),
         )
-        return response, 400
+        return response, HTTPStatus.BAD_REQUEST
 
     try:
         new_user.create()
@@ -56,7 +56,7 @@ def user_create():
         response = jsonify(
             status="FAILED", message="Error while creating user", errors=str(exception)
         )
-        return response, 400
+        return response, HTTPStatus.INTERNAL_SERVER_ERROR
 
     response = jsonify(
         status="SUCCESS",
@@ -69,7 +69,7 @@ def user_create():
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
 
-    return response, 201
+    return response, HTTPStatus.CREATED
 
 
 @blueprint.route("/password/update", methods=["PATCH"])
@@ -84,7 +84,7 @@ def user_password_update():
 
     if not user:
         response = jsonify(status="FAILED", message="User not found")
-        return response, 404
+        return response, HTTPStatus.NOT_FOUND
 
     try:
         UserPasswordUpdateValidator(
@@ -98,11 +98,11 @@ def user_password_update():
             message="Invalid payload",
             errors=exception.errors(include_url=False, include_context=False),
         )
-        return response, 400
+        return response, HTTPStatus.BAD_REQUEST
 
     if not user.check_password(previous_password):
         response = jsonify(status="FAILED", message="Previous password is invalid")
-        return response, 400
+        return response, HTTPStatus.PRECONDITION_FAILED
 
     try:
         user.password = password
@@ -111,7 +111,7 @@ def user_password_update():
         response = jsonify(
             status="FAILED", message="Error while updating user", errors=str(exception)
         )
-        return response, 400
+        return response, HTTPStatus.INTERNAL_SERVER_ERROR
 
     response = jsonify(status="SUCCESS", message="User successfully updated")
 
@@ -121,4 +121,4 @@ def user_password_update():
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
 
-    return response, 200
+    return response, HTTPStatus.OK

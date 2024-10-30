@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import (
     create_access_token,
@@ -34,13 +35,13 @@ def login():
             message="Invalid payload",
             errors=exception.errors(include_url=False, include_context=False),
         )
-        return response, 400
+        return response, HTTPStatus.BAD_REQUEST
 
     user = UserModel.query.filter_by(email=email).one_or_none()
 
     if not user or not user.check_password(password):
         response = jsonify(status="FAILED", message="Error while logging in")
-        return response, 401
+        return response, HTTPStatus.UNAUTHORIZED
 
     response = jsonify(
         status="SUCCESS",
@@ -52,7 +53,7 @@ def login():
 
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
-    return response, 200
+    return response, HTTPStatus.OK
 
 
 @blueprint.route("/token/refresh")
@@ -65,7 +66,7 @@ def token_refresh():
 
     access_token = create_access_token(identity=current_user.id)
     set_access_cookies(response, access_token)
-    return response, 200
+    return response, HTTPStatus.OK
 
 
 @blueprint.route("/logout", methods=["POST"])
@@ -73,8 +74,8 @@ def token_refresh():
 def logout():
     if not current_user:
         response = jsonify(status="FAILED", message="There is no authenticated user")
-        return response, 401
+        return response, HTTPStatus.UNAUTHORIZED
 
     response = jsonify(status="SUCCESS", message="User was successfully logged out")
     unset_jwt_cookies(response)
-    return response, 200
+    return response, HTTPStatus.OK

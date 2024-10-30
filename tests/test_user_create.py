@@ -1,4 +1,5 @@
 import unittest
+from http import HTTPStatus
 
 
 def test_user_create_successfully_create(client):
@@ -23,7 +24,7 @@ def test_user_create_successfully_create(client):
         "message": f"User {user_email} was successfully created",
     }
 
-    case.assertEqual(response.status_code, 201)
+    case.assertEqual(response.status_code, HTTPStatus.CREATED)
     case.assertDictEqual(expect, result)
 
 
@@ -49,7 +50,7 @@ def test_user_create_duplicated_record(client):
         "message": f"User {user_email} already exists",
     }
 
-    case.assertEqual(response.status_code, 409)
+    case.assertEqual(response.status_code, HTTPStatus.CONFLICT)
     case.assertDictEqual(expect, result)
 
 
@@ -96,5 +97,5 @@ def test_user_create_invalid_input_data(client):
         ],
     }
 
-    case.assertEqual(response.status_code, 400)
+    case.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
     case.assertDictEqual(expect, result)
