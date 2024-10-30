@@ -80,6 +80,12 @@ poetry install
 poetry run python main.py
 ```
 
+### Run unit tests
+
+```bash
+poetry run pytest
+```
+
 ### Make requests
 
 ```bash
