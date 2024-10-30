@@ -37,7 +37,7 @@ def test_user_password_update_successfully_update(client, authentication):
     execute(old_password, new_password)
 
 
-def test_user_password_update_incorrect_previou_password(client, authentication):
+def test_user_password_update_incorrect_previous_password(client, authentication):
     """Should identify incorrect previous password when changing user credentials"""
 
     case = unittest.TestCase()
