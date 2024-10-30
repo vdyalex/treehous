@@ -9,10 +9,8 @@ jwt = JWTManager()
 
 @jwt.unauthorized_loader
 def unauthorized_loader(reason):
-    return (
-        jsonify(status="FAILED", message="Unable to authenticate", errors=[reason]),
-        401,
-    )
+    response = jsonify(status="FAILED", message="Unable to authenticate", errors=[reason])
+    return response, 401
 
 
 @jwt.user_lookup_loader
